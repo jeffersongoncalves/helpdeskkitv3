@@ -1,6 +1,6 @@
 <div class="filament-hidden">
 
-![helpdeskkit](https://raw.githubusercontent.com/jeffersongoncalves/helpdeskkit/3.x/art/jeffersongoncalves-helpdeskkit.png)
+![Helpdesk Kit v3](https://raw.githubusercontent.com/jeffersongoncalves/helpdeskkitv3/main/art/jeffersongoncalves-helpdeskkitv3.png)
 
 </div>
 
