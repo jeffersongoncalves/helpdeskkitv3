@@ -4,164 +4,131 @@
 
 </div>
 
-# helpdeskkit Start Kit Filament 3.x and Laravel 12.x
+# HelpDeskKit — Starter Kit for Help Desk with Laravel 12 & Filament 3
 
-## About helpdeskkit
-
-helpdeskkit is a robust starter kit built on Laravel 12.x and Filament 3.x, designed to accelerate the development of modern
-web applications with a ready-to-use multi-panel structure.
+A production-ready starter kit for building help desk and customer support applications. Built on **Laravel 12**, **Filament 3**, **Livewire 3**, and **Tailwind CSS**, with multi-panel architecture and a complete ticketing system out of the box.
 
 ## Features
 
-- **Laravel 12.x** - The latest version of the most elegant PHP framework
-- **Filament 3.x** - Powerful and flexible admin framework
-- **Multi-Panel Structure** - Includes three pre-configured panels:
-    - Admin Panel (`/admin`) - For system administrators
-    - App Panel (`/app`) - For authenticated application users
-    - Public Panel (frontend interface) - For visitors
-- **Environment Configuration** - Centralized configuration through the `config/helpdeskkit.php` file
+### Multi-Panel Architecture
 
-## System Requirements
+Four pre-configured Filament panels, each with its own theme and authentication:
 
-- PHP 8.2 or higher
+| Panel | URL | Purpose |
+|-------|-----|---------|
+| **Admin** | `/admin` | System administration — manage admins, operators, and users |
+| **App** | `/app` | Authenticated users — create and track support tickets |
+| **Operator** | `/operator` | Support staff — manage tickets, departments, and responses |
+| **Guest** | `/` | Public-facing frontend for visitors |
+
+### Help Desk System
+
+Complete ticketing system powered by [`filament-help-desk`](https://github.com/jeffersongoncalves/filament-help-desk):
+
+- **Ticket Management** — Create, assign, update status and priority
+- **Departments & Categories** — Organize tickets by team and type
+- **Comments & Attachments** — Internal notes and file uploads
+- **Canned Responses** — Pre-written reply templates
+- **History Tracking** — Full audit trail of ticket changes
+- **Watchers** — Follow tickets for updates
+- **Email Integration** — Inbound email to ticket (IMAP, Mailgun, SendGrid, Resend, Postmark)
+- **Notifications** — Email alerts on ticket events
+
+### Multi-Guard Authentication
+
+Three independent authentication guards with separate user models and database tables:
+
+- `admin` — Admin model for system administrators
+- `web` — User model for application users
+- `operator` — Operator model for support staff
+
+Each guard has its own login, registration, password reset, and email verification.
+
+### User Features
+
+- Profile management with avatar upload
+- Browser session management
+- API tokens via Laravel Sanctum
+- In-app database notifications
+
+### Developer Tools
+
+- `composer dev` — Run server, queue, logs, and Vite in one command
+- `composer ide-helper` — Generate IDE autocompletion files
+- `composer pint` — Code style fixing with Laravel Pint
+- `composer phpstan` — Static analysis with Larastan
+- Developer logins for quick panel access during development
+- Log viewer in the admin panel
+
+## Requirements
+
+- PHP 8.2+
 - Composer
-- Node.js and PNPM
+- Node.js with PNPM
+- MySQL, PostgreSQL, or SQLite
 
 ## Installation
 
-Clone the repository
-``` bash
-laravel new my-app --using=jeffersongoncalves/helpdeskkitv3 --database=mysql
-```
-
-### Using helpdeskkit CLI
-
-Or use [helpdeskkit CLI](https://github.com/jeffersongoncalves/helpdeskkit-cli) for a simplified setup:
+### Using Laravel Installer
 
 ```bash
-helpdeskkit new my-app --kit=jeffersongoncalves/helpdeskkit
+laravel new my-helpdesk --using=jeffersongoncalves/helpdeskkitv3 --database=mysql
 ```
 
-> Install helpdeskkit CLI: `composer global require jeffersongoncalves/helpdeskkit-cli`
+### Using HelpDeskKit CLI
 
-###  Easy Installation
+```bash
+composer global require jeffersongoncalves/helpdeskkit-cli
+helpdeskkit new my-helpdesk --kit=jeffersongoncalves/helpdeskkit
+```
 
-helpdeskkit can be easily installed using the following command:
+### Automated Setup
 
 ```bash
 php install.php
 ```
 
-This command automates the installation process by:
-- Installing Composer dependencies
-- Setting up the environment file
-- Generating application key
-- Setting up the database
-- Running migrations
-- Installing Node.js dependencies
-- Building assets
-- Configuring Herd (if used)
+This handles Composer dependencies, environment setup, key generation, database migrations, Node.js dependencies, and asset building.
 
-### Manual Installation
+### Manual Setup
 
-Install JavaScript dependencies
-``` bash
-pnpm install
-```
-Install Composer dependencies
-``` bash
+```bash
 composer install
-```
-Set up environment
-``` bash
+pnpm install
 cp .env.example .env
 php artisan key:generate
-```
-
-Configure your database in the .env file
-
-Run migrations
-``` bash
 php artisan migrate
-```
-Run the server
-``` bash
-php artisan serve
 ```
 
 ## Installation with Docker
 
-Clone the repository
 ```bash
-laravel new my-app --using=jeffersongoncalves/helpdeskkit --database=mysql
-```
-
-Move into the project directory
-```bash
-cd my-app
-```
-
-Install Composer dependencies
-```bash
+laravel new my-helpdesk --using=jeffersongoncalves/helpdeskkitv3 --database=mysql
+cd my-helpdesk
 composer install
-```
-
-Set up environment
-```bash
 cp .env.example .env
-```
-
-Configuring custom ports may be necessary if you have other services running on the same ports.
-
-```bash
-# Application Port (ex: 8080)
-APP_PORT=8080
-
-# MySQL Port (ex: 3306)
-FORWARD_DB_PORT=3306
-
-# Redis Port (ex: 6379)
-FORWARD_REDIS_PORT=6379
-
-# Mailpit Port (ex: 1025)
-FORWARD_MAILPIT_PORT=1025
-```
-
-Start the Sail containers
-```bash
 ./vendor/bin/sail up -d
-```
-You won’t need to run `php artisan serve`, as Laravel Sail automatically handles the development server within the container.
-
-Attach to the application container
-```bash
 ./vendor/bin/sail shell
-```
-
-Generate the application key
-```bash
 php artisan key:generate
-```
-
-Install JavaScript dependencies
-```bash
 pnpm install
 ```
 
-## Authentication Structure
+Configure custom ports in `.env` if needed:
 
-helpdeskkit comes pre-configured with a custom authentication system that supports different types of users:
-
-- `Admin` - For administrative panel access
-- `User` - For application panel access
+```env
+APP_PORT=8080
+FORWARD_DB_PORT=3306
+FORWARD_REDIS_PORT=6379
+FORWARD_MAILPIT_PORT=1025
+```
 
 ## Development
 
-``` bash
-# Run the development server with logs, queues and asset compilation
+```bash
+# Run all services (server, queue, logs, vite)
 composer dev
 
-# Or run each component separately
+# Or run individually
 php artisan serve
 php artisan queue:listen --tries=1
 pnpm run dev
@@ -169,43 +136,39 @@ pnpm run dev
 
 ## Customization
 
-### Panel Configuration
+### Panel Providers
 
-Panels can be customized through their respective providers:
+Each panel is configured through its provider in `app/Providers/Filament/`:
 
-- `app/Providers/Filament/AdminPanelProvider.php`
-- `app/Providers/Filament/AppPanelProvider.php`
-- `app/Providers/Filament/PublicPanelProvider.php`
+- `AdminPanelProvider.php`
+- `AppPanelProvider.php`
+- `OperatorPanelProvider.php`
+- `GuestPanelProvider.php`
 
-Alternatively, these settings are also consolidated in the `config/helpdeskkit.php` file for easier management.
+### Configuration
 
-### Themes and Colors
+The `config/helpdeskkit.php` file centralizes panel routes, middleware, branding, and authentication guards.
 
-Each panel can have its own color scheme, which can be easily modified in the corresponding Provider files or in the
-`helpdeskkit.php` configuration file.
+The `config/help-desk.php` file configures the ticketing system including email channels, notifications, attachments, and webhooks.
 
-### Configuration File
+### Themes
 
-The `config/helpdeskkit.php` file centralizes the configuration of the starter kit, including:
+Each panel has its own Tailwind CSS theme in `resources/css/filament/`. Colors and styles can be customized per panel.
 
-- Panel routes
-- Middleware for each panel
-- Branding options (logo, colors)
-- Authentication guards
+## Tech Stack
 
-## Resources
-
-helpdeskkit includes support for:
-
-- User and admin management
-- Multi-guard authentication system
-- Tailwind CSS integration
-- Database queue configuration
-- Customizable panel routing and branding
+| Component | Version |
+|-----------|---------|
+| Laravel | 12.x |
+| Filament | 3.x |
+| Livewire | 3.x |
+| Tailwind CSS | 3.x |
+| Vite | 7.x |
+| Pest | 3.x |
 
 ## License
 
-This project is licensed under the [MIT License](LICENSE).
+[MIT License](LICENSE)
 
 ## Credits
 
