@@ -75,11 +75,11 @@ Each guard has its own login, registration, password reset, and email verificati
 laravel new my-helpdesk --using=jeffersongoncalves/helpdeskkitv3 --database=mysql
 ```
 
-### Using HelpDeskKit CLI
+### Using FilaKit CLI
 
 ```bash
-composer global require jeffersongoncalves/helpdeskkit-cli
-helpdeskkit new my-helpdesk --kit=jeffersongoncalves/helpdeskkit
+composer global require jeffersongoncalves/filakit-cli
+filakit new my-helpdesk --kit=jeffersongoncalves/helpdeskkitv3
 ```
 
 ### Automated Setup
