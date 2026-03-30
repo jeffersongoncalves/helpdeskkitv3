@@ -8,19 +8,20 @@
     },
     "pnpm": {
         "overrides": {
-            "rollup": ">=4.59.0"
+            "rollup": ">=4.59.0",
+            "yaml": ">=2.8.3"
         }
     },
     "devDependencies": {
         "@tailwindcss/forms": "^0.5.11",
         "@tailwindcss/typography": "^0.5.19",
         "autoprefixer": "^10.4.27",
-        "axios": "^1.13.6",
+        "axios": "^1.14.0",
         "concurrently": "^9.2.1",
         "laravel-vite-plugin": "^3.0.0",
         "postcss": "^8.5.8",
         "postcss-nesting": "^14.0.0",
-        "tailwindcss": "^3.4.19",
+        "tailwindcss": "^4.2.2",
         "vite": "^8.0.3"
     }
 }
