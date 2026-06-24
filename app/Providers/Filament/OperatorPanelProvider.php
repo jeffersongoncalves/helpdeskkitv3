@@ -3,7 +3,6 @@
 namespace App\Providers\Filament;
 
 use App\Filament\Operator\Pages\Auth\Login;
-use JeffersonGoncalves\FilamentHelpDesk\FilamentHelpDeskOperatorPlugin;
 use Filament\Enums\ThemeMode;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
@@ -22,6 +21,8 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Support\Facades\Vite;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use JeffersonGoncalves\Filament\Pwa\FilamentPwaPlugin;
+use JeffersonGoncalves\FilamentHelpDesk\FilamentHelpDeskOperatorPlugin;
 use Joaopaulolndev\FilamentEditProfile\FilamentEditProfilePlugin;
 use Joaopaulolndev\FilamentEditProfile\Pages\EditProfilePage;
 
@@ -37,7 +38,7 @@ class OperatorPanelProvider extends PanelProvider
             ->colors([
                 'primary' => Color::Blue,
             ])
-            ->brandLogo(fn () => Vite::asset(config('helpdeskkit.favicon.logo')))
+            ->brandLogo(fn () => Vite::asset(config('helpdeskkit.logo')))
             ->brandLogoHeight(fn () => request()->is('operator/login', 'operator/password-reset/*') ? '121px' : '50px')
             ->viteTheme('resources/css/filament/operator/theme.css')
             ->defaultThemeMode(config('helpdeskkit.theme_mode', ThemeMode::Dark))
@@ -66,6 +67,7 @@ class OperatorPanelProvider extends PanelProvider
                 Authenticate::class,
             ])
             ->plugins([
+                FilamentPwaPlugin::make(),
                 FilamentHelpDeskOperatorPlugin::make(),
                 FilamentEditProfilePlugin::make()
                     ->slug('my-profile')

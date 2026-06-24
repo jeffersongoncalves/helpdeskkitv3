@@ -4,7 +4,6 @@ namespace App\Providers\Filament;
 
 use AchyutN\FilamentLogViewer\FilamentLogViewer;
 use App\Filament\Pages\Auth\Login;
-use JeffersonGoncalves\FilamentHelpDesk\FilamentHelpDeskAdminPlugin;
 use Filament\Enums\ThemeMode;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
@@ -23,6 +22,8 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Support\Facades\Vite;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use JeffersonGoncalves\Filament\Pwa\FilamentPwaPlugin;
+use JeffersonGoncalves\FilamentHelpDesk\FilamentHelpDeskAdminPlugin;
 use Joaopaulolndev\FilamentEditProfile\FilamentEditProfilePlugin;
 use Joaopaulolndev\FilamentEditProfile\Pages\EditProfilePage;
 
@@ -39,7 +40,7 @@ class AdminPanelProvider extends PanelProvider
             ->colors([
                 'primary' => Color::Amber,
             ])
-            ->brandLogo(fn () => Vite::asset(config('helpdeskkit.favicon.logo')))
+            ->brandLogo(fn () => Vite::asset(config('helpdeskkit.logo')))
             ->brandLogoHeight(fn () => request()->is('admin/login', 'admin/password-reset/*') ? '121px' : '50px')
             ->viteTheme('resources/css/filament/admin/theme.css')
             ->defaultThemeMode(config('helpdeskkit.theme_mode', ThemeMode::Dark))
@@ -73,6 +74,7 @@ class AdminPanelProvider extends PanelProvider
                 __('Settings'),
             ])
             ->plugins([
+                FilamentPwaPlugin::make(),
                 FilamentHelpDeskAdminPlugin::make(),
                 FilamentLogViewer::make()
                     ->navigationGroup(__('Settings')),
