@@ -98,6 +98,8 @@ pnpm install
 cp .env.example .env
 php artisan key:generate
 php artisan migrate
+pnpm run build
+php artisan serve
 ```
 
 ## Installation with Docker
