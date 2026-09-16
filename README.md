@@ -8,7 +8,7 @@
 
 [![Buy Me A Coffee](https://img.shields.io/badge/Buy%20Me%20A%20Coffee-support-FFDD00?style=flat-square&logo=buy-me-a-coffee&logoColor=black)](https://buymeacoffee.com/jeffersongoncalves)
 
-A production-ready starter kit for building help desk and customer support applications. Built on **Laravel 12**, **Filament 3**, **Livewire 3**, and **Tailwind CSS**, with multi-panel architecture and a complete ticketing system out of the box.
+A production-ready starter kit for building help desk and customer support applications. Built on **Laravel 13**, **Filament 3**, **Livewire 3**, and **Tailwind CSS**, with multi-panel architecture and a complete ticketing system out of the box.
 
 ## Features
 
