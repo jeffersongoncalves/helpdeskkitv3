@@ -28,8 +28,10 @@ jobs:
 
       - name: Extract release date from git tag
         id: release_date
+        env:
+          TAG_NAME: ${{ github.event.release.tag_name }}
         run: |
-          echo "date=$(git log -1 --date=short --format=%ad '${{ github.event.release.tag_name }}')" >> $GITHUB_OUTPUT;
+          echo "date=$(git log -1 --date=short --format=%ad "$TAG_NAME")" >> "$GITHUB_OUTPUT"
 
       - name: Update Changelog
         uses: stefanzweifel/changelog-updater-action@a938690fad7edf25368f37e43a1ed1b34303eb36 # v1
