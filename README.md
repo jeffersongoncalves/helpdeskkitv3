@@ -4,11 +4,11 @@
 
 </div>
 
-# HelpDeskKit — Starter Kit for Help Desk with Laravel 12 & Filament 3
+# HelpDeskKit — Starter Kit for Help Desk with Laravel 13 & Filament 3
 
 [![Buy Me A Coffee](https://img.shields.io/badge/Buy%20Me%20A%20Coffee-support-FFDD00?style=flat-square&logo=buy-me-a-coffee&logoColor=black)](https://buymeacoffee.com/jeffersongoncalves)
 
-A production-ready starter kit for building help desk and customer support applications. Built on **Laravel 12**, **Filament 3**, **Livewire 3**, and **Tailwind CSS**, with multi-panel architecture and a complete ticketing system out of the box.
+A production-ready starter kit for building help desk and customer support applications. Built on **Laravel 13**, **Filament 3**, **Livewire 3**, and **Tailwind CSS**, with multi-panel architecture and a complete ticketing system out of the box.
 
 ## Features
 
@@ -64,7 +64,7 @@ Each guard has its own login, registration, password reset, and email verificati
 
 ## Requirements
 
-- PHP 8.2+
+- PHP 8.3+
 - Composer
 - Node.js with PNPM
 - MySQL, PostgreSQL, or SQLite
@@ -163,12 +163,12 @@ Each panel has its own Tailwind CSS theme in `resources/css/filament/`. Colors a
 
 | Component | Version |
 |-----------|---------|
-| Laravel | 12.x |
+| Laravel | 13.x |
 | Filament | 3.x |
 | Livewire | 3.x |
 | Tailwind CSS | 3.x |
-| Vite | 7.x |
-| Pest | 3.x |
+| Vite | 8.x |
+| Pest | 4.x |
 
 ## License
 
