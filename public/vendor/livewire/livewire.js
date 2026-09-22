@@ -8418,10 +8418,27 @@ ${expression ? 'Expression: "' + expression + '"\n\n' : ""}`, el);
     };
     queueMicrotask(() => {
       queueMicrotask(() => {
+        let shouldScrollToFragment = !document.body.hasAttribute("data-scroll-x");
         scroll(document.body);
         document.querySelectorAll(["[x-navigate\\:scroll]", "[wire\\:scroll]"]).forEach(scroll);
+        if (shouldScrollToFragment) {
+          getFragmentTarget()?.scrollIntoView({ behavior: "instant" });
+        }
       });
     });
+  }
+  function getFragmentTarget() {
+    let fragment = window.location.hash.substring(1);
+    if (!fragment)
+      return;
+    let target = document.getElementById(fragment);
+    if (target)
+      return target;
+    try {
+      fragment = decodeURIComponent(fragment);
+    } catch (e) {
+    }
+    return document.getElementById(fragment) || Array.from(document.getElementsByName(fragment)).find((el) => el.tagName === "A");
   }
 
   // js/plugins/navigate/persist.js
@@ -8438,17 +8455,19 @@ ${expression ? 'Expression: "' + expression + '"\n\n' : ""}`, el);
   }
   function putPersistantElementsBack(callback) {
     let usedPersists = [];
+    let putBacks = [];
     document.querySelectorAll("[x-persist]").forEach((i) => {
       let old = els[i.getAttribute("x-persist")];
       if (!old)
         return;
       usedPersists.push(i.getAttribute("x-persist"));
       old._x_wasPersisted = true;
-      callback(old, i);
       module_default.mutateDom(() => {
         i.replaceWith(old);
       });
+      putBacks.push([old, i]);
     });
+    putBacks.forEach(([old, i]) => callback(old, i));
     Object.entries(els).forEach(([key, el]) => {
       if (usedPersists.includes(key))
         return;
@@ -10692,13 +10711,39 @@ ${expression ? 'Expression: "' + expression + '"\n\n' : ""}`, el);
   directive2("loading", ({ el, directive: directive3, component, cleanup: cleanup2 }) => {
     let { targets, inverted } = getTargets(el);
     let [delay3, abortDelay] = applyDelay(directive3);
+    let restoreLoadingState = () => toggleBooleanStateDirective(el, directive3, false);
+    let activeLoadingCount = 0;
+    let startLoading = () => {
+      if (activeLoadingCount === 0) {
+        if (directive3.modifiers.includes("class")) {
+          let classes = directive3.expression.split(" ").filter(String);
+          let classStates = classes.map((className) => [className, el.classList.contains(className)]);
+          restoreLoadingState = () => classStates.forEach(([className, wasPresent]) => {
+            el.classList.toggle(className, wasPresent);
+          });
+        } else if (directive3.modifiers.includes("attr")) {
+          let attribute = directive3.expression;
+          let value = el.getAttribute(attribute);
+          restoreLoadingState = value === null ? () => el.removeAttribute(attribute) : () => el.setAttribute(attribute, value);
+        }
+        delay3(() => toggleBooleanStateDirective(el, directive3, true));
+      }
+      activeLoadingCount++;
+    };
+    let endLoading = () => {
+      if (activeLoadingCount === 0)
+        return;
+      activeLoadingCount--;
+      if (activeLoadingCount === 0)
+        abortDelay(restoreLoadingState);
+    };
     let cleanupA = whenTargetsArePartOfRequest(component, targets, inverted, [
-      () => delay3(() => toggleBooleanStateDirective(el, directive3, true)),
-      () => abortDelay(() => toggleBooleanStateDirective(el, directive3, false))
+      startLoading,
+      endLoading
     ]);
     let cleanupB = whenTargetsArePartOfFileUpload(component, targets, [
-      () => delay3(() => toggleBooleanStateDirective(el, directive3, true)),
-      () => abortDelay(() => toggleBooleanStateDirective(el, directive3, false))
+      startLoading,
+      endLoading
     ]);
     cleanup2(() => {
       cleanupA();
@@ -10946,10 +10991,12 @@ ${expression ? 'Expression: "' + expression + '"\n\n' : ""}`, el);
         isDirty = JSON.stringify(component.canonical) !== JSON.stringify(component.reactive);
       } else {
         for (let i = 0; i < targets.length; i++) {
-          if (isDirty)
-            break;
           let target = targets[i];
-          isDirty = JSON.stringify(dataGet(component.canonical, target)) !== JSON.stringify(dataGet(component.reactive, target));
+          let canonical = JSON.stringify(dataGet(component.canonical, target));
+          let reactive3 = JSON.stringify(dataGet(component.reactive, target));
+          if (canonical !== reactive3) {
+            isDirty = true;
+          }
         }
       }
       if (oldIsDirty !== isDirty) {
@@ -11144,10 +11191,13 @@ ${expression ? 'Expression: "' + expression + '"\n\n' : ""}`, el);
     let durationInMilliSeconds;
     let durationInMilliSecondsString = modifiers.find((mod) => mod.match(/([0-9]+)ms/));
     let durationInSecondsString = modifiers.find((mod) => mod.match(/([0-9]+)s/));
+    let durationInMinutesString = modifiers.find((mod) => mod.match(/([0-9]+)m/));
     if (durationInMilliSecondsString) {
       durationInMilliSeconds = Number(durationInMilliSecondsString.replace("ms", ""));
     } else if (durationInSecondsString) {
       durationInMilliSeconds = Number(durationInSecondsString.replace("s", "")) * 1e3;
+    } else if (durationInMinutesString) {
+      durationInMilliSeconds = Number(durationInMinutesString.replace("m", "")) * 60 * 1e3;
     }
     return durationInMilliSeconds || defaultDuration;
   }

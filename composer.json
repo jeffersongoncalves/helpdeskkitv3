@@ -25,9 +25,9 @@
         "jeffersongoncalves/filament-pwa": "^1.1",
         "jeffersongoncalves/filament-sensible-defaults": "^1.1",
         "joaopaulolndev/filament-edit-profile": "^1.0",
-        "laravel/framework": "^13.0",
+        "laravel/framework": "^13.32",
         "laravel/tinker": "^3.0.0",
-        "livewire/livewire": "^3.6"
+        "livewire/livewire": "^3.8"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^4.0",
