@@ -2,7 +2,7 @@
     "$schema": "https://getcomposer.org/schema.json",
     "name": "jeffersongoncalves/helpdeskkitv3",
     "type": "project",
-    "description": "helpdeskkit starter kit built on Laravel 12.x and Filament 3.x with a ready-to-use multi-panel structure.",
+    "description": "helpdeskkit starter kit built on Laravel 13.x and Filament 3.x with a ready-to-use multi-panel structure.",
     "keywords": [
         "laravel-starter-kit",
         "starter-kit",
