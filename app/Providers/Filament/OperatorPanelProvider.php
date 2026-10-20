@@ -43,6 +43,7 @@ class OperatorPanelProvider extends PanelProvider
             ->brandLogoHeight(fn () => request()->is('operator/login', 'operator/password-reset/*') ? '121px' : '50px')
             ->viteTheme('resources/css/filament/operator/theme.css')
             ->defaultThemeMode(config('helpdeskkit.theme_mode', ThemeMode::Dark))
+            ->discoverClusters(in: app_path('Filament/Operator/Clusters'), for: 'App\\Filament\\Operator\\Clusters')
             ->discoverResources(in: app_path('Filament/Operator/Resources'), for: 'App\\Filament\\Operator\\Resources')
             ->discoverPages(in: app_path('Filament/Operator/Pages'), for: 'App\\Filament\\Operator\\Pages')
             ->pages([
